@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# run it when there is sufficient space
+
 mkdir ./data
 
 curl "https://nycopendata.socrata.com/api/views/erm2-nwe9/rows.csv?accessType=DOWNLOAD" \
