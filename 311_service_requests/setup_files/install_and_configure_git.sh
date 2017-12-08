@@ -8,6 +8,5 @@ git config --global user.email narayana1043@gmail.com
 git clone https://github.com/narayana1043/datascience_challenges.git
 cd datascience_challenges
 git remote remove origin
-git remote add origin git@github.com:narayana1043/datascience_challenges.git
 
 # follow instructions in get_data.sh if data is not is s3
