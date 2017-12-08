@@ -1,0 +1,9 @@
+[
+    {
+        "Name":"S3DistCp step",
+        "Args":["s3-dist-cp","--s3Endpoint=s3.amazonaws.com","--src=s3://aws-logs-246236022381-us-east-1/pager/sample.csv","--dest=hdfs:///pager/sr"],
+        "ActionOnFailure":"CONTINUE",
+        "Type":"CUSTOM_JAR",
+        "Jar":"command-runner.jar"
+    }
+]
