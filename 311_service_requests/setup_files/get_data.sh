@@ -13,3 +13,6 @@ curl "https://data.cityofnewyork.us/Health/DOHMH-New-York-City-Restaurant-Inspec
 head -n 1 ./data/311_service_requests.csv | sed 's/,/\n/g' > ./data/features.txt
 
 # upload the data into s3 after the download is complete
+
+# create pager bucket before hand
+aws emr s3 cp ./data/311_service_requests.csv s3://pager311data/

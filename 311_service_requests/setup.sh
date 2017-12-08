@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-sudo yum install git
+# run the commands in ./setup_file/install_and_configure_git.sh
+
 sudo yum install screen
 sudo pip-3.4 install jupyter
 jupyter notebook --generate-config
