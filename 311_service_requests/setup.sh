@@ -11,6 +11,6 @@ echo "c.NotebookApp.open_browser = False" >> /home/hadoop/.jupyter/jupyter_noteb
 ./setup_files/start_jupyter_screen.sh
 
 # change the cluster-id
-aws emr add-steps --cluster-id j-2VZU4P5595EGK --steps file://./setup_files/s32hdfs.json
+# aws emr add-steps --cluster-id j-2VZU4P5595EGK --steps file://./setup_files/s32hdfs.json
 
 
