@@ -8,4 +8,13 @@ git config --global user.email narayana1043@gmail.com
 git clone https://github.com/narayana1043/datascience_challenges.git
 cd datascience_challenges
 
-# follow instructions in get_data.sh if data is not is s3
+# run the commands in ./setup_file/install_and_configure_git.sh
+
+sudo yum install screen
+sudo pip-3.4 install jupyter
+sudo pip-3.4 install pandas
+
+# configure jupyter
+jupyter notebook --generate-config
+echo "c.NotebookApp.port = 8889" >> /home/hadoop/.jupyter/jupyter_notebook_config.py
+echo "c.NotebookApp.open_browser = False" >> /home/hadoop/.jupyter/jupyter_notebook_config.py
