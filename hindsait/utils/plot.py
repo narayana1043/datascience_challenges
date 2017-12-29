@@ -1,6 +1,6 @@
 from mpl_toolkits.basemap import Basemap
 from matplotlib.patches import Polygon, Patch
-from utils.utils import print_error
+from utils.errors import print_error
 from operator import itemgetter
 import matplotlib.pyplot as plt
 import numpy as np
@@ -42,6 +42,8 @@ def base_map_usa(state_borders=True, county_borders=True, state_names=False, map
     county_info = m.readshapefile('./basemaps/cb_2016_us_county_500k', 'counties', drawbounds=county_borders,
                                   color='black', linewidth=0.4)
 
+    # adding state name abbreviation to the map
+    # TODO: check for outlying states and put them on the us map
     if state_names:
         printed_names = []
         for state_info, state in zip(m.states_info, m.states):
@@ -53,6 +55,8 @@ def base_map_usa(state_borders=True, county_borders=True, state_names=False, map
             # You have to align x,y manually to avoid overlapping for little states
             plt.text(x + .1, y, short_name, ha="center")
             printed_names.append(short_name)
+
+
 
     return m
 
