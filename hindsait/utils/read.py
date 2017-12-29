@@ -8,11 +8,11 @@ def read_sas_doc(path_in, path_out, return_df=False, write_df=False):
     Reads the SAS document and return a processed data frame containing all the information in the SAS document. The
      SAS file is missing some information that is present in excel document. At this point I don't see that information
      relevant.
-    :param path_out:
-    :param path_in:
+    :param path_out: where to output the csv file
+    :param path_in: location of the file
     :param write_df: writes data frame to disk 'path: ./DATA/docs_df.csv'
     :param return_df: if True returns a data frame
-    :return:
+    :return: None or data frame: if return_df - True)
     """
 
     if not write_df and not return_df:
@@ -46,12 +46,12 @@ def read_sas_doc(path_in, path_out, return_df=False, write_df=False):
 
 def read_data_wrt_sas_docs(path_in, path_out, return_df=False, write_df=False):
     """
-
-    :param path_in:
-    :param path_out:
-    :param return_df:
-    :param write_df:
-    :return:
+    reads the ahrf data w.r.t to the sas doc avaiable
+    :param path_in: location of the arhf data file
+    :param path_out: where to out put the csv file
+    :param return_df: Boolean if true reutrns the data as df else None
+    :param write_df: Boolean if ture writes the data into the path_out specified
+    :return: id return_df is true it returns data frame.
     """
     if not write_df and not return_df:
         raise Exception('Choose proper parameters to read the docs')
@@ -84,12 +84,12 @@ def read_data_wrt_sas_docs(path_in, path_out, return_df=False, write_df=False):
 
 def read_excel_doc(path_in, path_out, return_df=False, write_df=False):
     """
-
-    :param path_in
-    :param path_out
-    :param return_df:
-    :param write_df:
-    :return:
+    read the data from excel doc and converts it into csv file
+    :param path_in location of the excel document
+    :param path_out where to write the csvoutput file to
+    :param return_df: Boolean if true returns data frame
+    :param write_df: Boolean writes data frame if true
+    :return: returns data frame or None
     """
     work_book = xlrd.open_workbook(path_in)
     work_sheet = work_book.sheet_by_name('AHRF 2016-17 Technical Doc')
@@ -123,12 +123,12 @@ def read_excel_doc(path_in, path_out, return_df=False, write_df=False):
 
 def read_fips_state_codes(path_in, path_out, write_df=False, return_df=False):
     """
-
-    :param path_in
-    :param path_out
-    :param write_df
-    :param return_df
-    :return: FIP codes data frame
+    reads states FIP code file and writes it into csv file ar returns a data frame based the parametes set
+    :param path_in input path of the file
+    :param path_out out path to wrrite the data as csv
+    :param write_df Boolean if true writes csv file
+    :param return_df Boolean if true returns a dataframe
+    :return: FIP codes returns data frame or None
     """
     if not write_df and not return_df:
         raise Exception('Choose proper parameters to read the docs')
@@ -145,12 +145,12 @@ def read_fips_state_codes(path_in, path_out, write_df=False, return_df=False):
 
 def read_fips_all_codes(path_in, path_out, write_df=False, return_df=False):
     """
-
-    :param path_in
-    :param path_out
-    :param write_df:
-    :param return_df:
-    :return:
+    reads all FIP (state & county) code file and writes it into csv file ar returns a data frame based the parametes set
+    :param path_in input path of the file
+    :param path_out out path to wrrite the data as csv
+    :param write_df Boolean if true writes csv file
+    :param return_df Boolean if true returns a dataframe
+    :return: FIP codes returns data frame or None
     """
     if not write_df and not return_df:
         raise Exception('Choose proper parameters to read the docs')
@@ -178,22 +178,3 @@ def read_fips_all_codes(path_in, path_out, write_df=False, return_df=False):
         return excel_doc_df
 
     return None
-
-
-# read_sas_doc(write_df=True)
-# read_data_wrt_sas_docs(write_df=True)
-# read_excel_doc(write_df=True)
-# read_fips_state_codes(write_df=True)
-# read_fips_all_codes(write_df=True)
-
-
-# df = pd.read_csv('../DATA/doc.csv')
-# print(df.count())
-# print(df[df['field_length']>30].count())
-# print(df[df['field_length']>30][['field_variable_name']].head())
-
-# df = pd.read_csv('../DATA/data.csv')
-# print(len(df.columns))
-# for col in df.columns:
-#     print(col)
-# print(df[['f1389115', 'f1389215']].head())
