@@ -1,11 +1,11 @@
 import pandas as pd
-from utils.errors import print_error
 
 
-def extract_feature_data(data, feature, state='all', level='county'):
+def extract_feature_data(data, feature, state='all'):
     """
     extracts the features_values from the data. performs groupby on feature of our interest, makes a dictionary of each
     unique value in the feature and assings the countys or states as lists to relevant key in the dictionary.
+
     :param data: a pandas dataframe
     :param feature: feature of interest in the dataframe passed
     :param state: include only one state or all of them. In the case of one state pass state_name, abbrevation or fpcode
@@ -14,6 +14,7 @@ def extract_feature_data(data, feature, state='all', level='county'):
     """
     state = state.lower()
     state_df = pd.read_csv('./csv_data/fips_state_codes.csv', dtype=str)
+    data.loc[:, 'state_county_fip'] = data[['f00011', 'f00012']].apply(tuple, axis=1)
 
     if state != 'all':
         if state in state_df['STATE_NAME'].str.lower().tolist():
@@ -26,20 +27,16 @@ def extract_feature_data(data, feature, state='all', level='county'):
             print('state not found')
         data = data[data[key].str.lower() == state]
 
-    if level == 'county':
-        feature_values_dict = data[['f00012', feature]].groupby(feature)['f00012'].apply(list).to_dict()
-        return feature_values_dict
-    elif level == 'state':
-        feature_values_dict = data[['f00011', feature]].groupby(feature)['f00012'].apply(list).to_dict()
-        return feature_values_dict
-    else:
-        print_error(error='level')
+    feature_values_dict = data.groupby([feature])['state_county_fip'].apply(list).to_dict()
+
+    return feature_values_dict
 
 
 def get_features(data, doc_df,count_unique_feature_values):
     """
     counts the unique feature_values for each feature in the dataframe and return only the count value of interest with
     the features documentation.
+
     :param data: data frame
     :param doc_df: feature documentation
     :param count_unique_feature_values: nunique value of interest in each feature
