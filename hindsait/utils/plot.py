@@ -7,228 +7,220 @@ import numpy as np
 import pandas as pd
 
 
-def base_map_usa(state_borders=True, county_borders=True, state_names=False, map_boundaries=[-119, -64, 22.0, 50.5]):
-    """
-    Creates a basemap object with the given parameters as input. Generates the basemap for the country US but by
-     varying the parameter map boundaries we can get states or regions of interest in US.
-    :param state_borders: True draws boarders
-    :param county_borders: True draws boarders
-    :param state_names:True puts names(2 letter abbreviations) on the states
-    :param map_boundaries: [ll_lon, ur_lon, ll_lat, ur_lat]
-    :return: returns a basemap object
-    """
-    # Set the lower left and upper right limits of the bounding box:
-    llcrnrlon, urcrnrlon, llcrnrlat, urcrnrlat = map_boundaries
-
-    # and calculate a centerpoint, needed for the projection:
-    center_lon = float(llcrnrlon + urcrnrlon) / 2.0
-    center_lat = float(llcrnrlat + urcrnrlat) / 2.0
-
-    m = Basemap(resolution='i', llcrnrlon=llcrnrlon, urcrnrlon=urcrnrlon, lon_0=center_lon, llcrnrlat=llcrnrlat,
-                urcrnrlat=urcrnrlat, lat_0=center_lat, projection='tmerc')
-    # Other configurations
-    # m.drawmapboundary(fill_color='ivory')
-    # m.fillcontinents(color='coral', lake_color='aqua')
-    # m.drawcoastlines()
-    # m.drawcountries()
-    # m.drawstates()
-
-    # draw state boundaries using the maps in base maps folder
-
-    state_info = m.readshapefile('./basemaps/cb_2016_us_state_500k', 'states', drawbounds=state_borders, color="red",
-                                 linewidth=1)
-
-    # County data from Census Bureau
-    county_info = m.readshapefile('./basemaps/cb_2016_us_county_500k', 'counties', drawbounds=county_borders,
-                                  color='black', linewidth=0.4)
-
-    # adding state name abbreviation to the map
-    # TODO: check for outlying states and put them on the us map
-    if state_names:
-        printed_names = []
-        for state_info, state in zip(m.states_info, m.states):
-            short_name = state_info['STUSPS']
-            if short_name in printed_names:
-                continue
-            # center of polygon
-            x, y = np.array(state).mean(axis=0)
-            # You have to align x,y manually to avoid overlapping for little states
-            plt.text(x + .1, y, short_name, ha="center")
-            printed_names.append(short_name)
-
-
-
-    return m
-
-
-def colour_code_usa_country(data, title="Title", desc=None, state_borders=True, county_borders=True, state_names=False,
-                            level='county'):
-    """
-    color coding states/counties based on the level set on whole US map and plots it.
-    :param data: should be a dict with each key containing the list of states or counties in it
-    :param title: Title for the plot; default is "Title"
-    :param desc: Description of the plot, will be added below the plot
-    :param state_borders: Boolean if true draws the boarders
-    :param county_borders: Boolean if true draws the boarders
-    :param state_names: Boolean if true diplays the state names as 2 letter abbreviations "location of the name needs
-    update"
-    :param level: state / county what type of data ?
-    :return: None
-    """
-    m = base_map_usa(state_borders, county_borders, state_names)
-    available_colours = ['blue', 'orange', 'green', 'olive', 'purple', 'cyan']
-    categories = data.keys()
-    assert len(categories) < 5, "Cannot handle more than 5 categories"
-    category_colour = {category: colour for category, colour in zip(categories, available_colours[:len(categories)])}
-
-    # get current axes instance
-    ax = plt.gca()
-
-    # sets the colour of the county based on its category, if no category is given for a county then its colour is white
-    #  as white is the default colour assigned.
-    if level == 'county':
-        level_info = m.counties_info
-        level_xy = m.counties
-    elif level == 'state':
-        level_info = m.states_info
-        level_xy = m.states
-    else:
-        print_error(error='level')
-
-    for level_index, level_info in enumerate(level_info):
-        seg = level_xy[level_index]
-        fp_code = level_info['COUNTYFP']
-        for category in categories:
-            if fp_code in data[category]:
-                poly = Polygon(seg, facecolor=category_colour[category])
-                ax.add_patch(poly)
-                break
-            else:
-                poly = Polygon(seg, facecolor=available_colours[-1])
-                ax.add_patch(poly)
-
-    patch_list = [Patch(color=category_colour[category], label=str(category)) for category in categories] + [
-        Patch(color=available_colours[-1], label='Unlabelled')]
-
-    legend = plt.legend(handles=patch_list, loc='best', bbox_to_anchor=(1, 0.5), ncol=len(categories) + 1)
-    legend.get_frame().set_color('grey')
-
-    title = plt.title(title)
-    title.set_color('grey')
-
-    if desc is not None:
-        plt.figtext(x=0.5, y=0, s=desc, wrap=True, horizontalalignment='center', fontsize=8)
-
-    plt.show()
-
-    return None
-
-
-def colour_code_usa_state(data, state, title="Title", desc=None):
-    """
-    colour coding any state in us and plots the map
-    :param data: a dictionary with categories as keys and their values as county fp codes
-    :param state_name: the state name of our interest
-    :param state_abbrev: the state name abbrev of our interest
-    :param state_fip: the state fip code of our interest
-    :param title: the title for the plot of the map
-    :param desc: decription of the plot of the map
-    :return: None
-    """
-
-    assert state, 'set one of the below equal to param state. \n 1. state_name \n 2. state_abbrev \n 3. state_fip_code'
-
-    state = state.lower()
-    state_df = pd.read_csv('./csv_data/fips_state_codes.csv', dtype=str)
-
-    if state in state_df['STATE_NAME'].str.lower().tolist():
-        key = 'NAME'
-        state_name = state
-        state_fip_given = state_df[state_df['STATE_NAME'].str.lower() == state]['STATE'].str.lower().tolist()[0]
-    elif state in state_df['STATE']:
-        key = 'STATEFP'
-        state_name = state_df[state_df['STATE'] == state]['STATE_NAME'].str.lower().tolist()[0]
-        state_fip_given = state_df[state_df['STATE'] == state]['STATE'].str.lower().tolist()[0]
-    elif state in state_df['STUSAB'].str.lower().tolist():
-        key = 'STUSPS'
-        state_name = state_df[state_df['STUSAB'] == state.upper()]['STATE_NAME'].str.lower().tolist()[0]
-        state_fip_given = state_df[state_df['STUSAB'] == state.upper()]['STATE'].str.lower().tolist()[0]
-    else:
-        print('state not found')
+class USMaps:
 
     available_colours = ['blue', 'orange', 'green', 'olive', 'purple', 'cyan']
-    categories = data.keys()
-    assert len(categories) < 5, "Cannot handle more than 5 categories"
-    category_colour = {category: colour for category, colour in zip(categories, available_colours[:len(categories)])}
 
-    m = base_map_usa(state_borders=True, county_borders=True, state_names=False)
+    def __init__(self, state_borders=True, county_borders=True, state_names=False, map_boundaries=None):
+        """
+        basic attributes to generate the map
 
-    # current axes instance
-    ax = plt.gca()
+        :param state_borders: Boolean if True draw state borders
+        :param county_borders: Boolean if True draw county borders
+        :param state_names: Boolean if True draw add state names to plot
+        :param map_boundaries: list of border latitude and longitudes
+        """
+        self.state_borders = state_borders
+        self.county_borders = county_borders
+        self.state_names = state_names
 
-    # get map boundaries
-    geo_lines_dict_keys = ['llcrnrlon', 'urcrnrlon', 'llcrnrlat', 'urcrnrlat']
-    geo_lines_dict_values = [180, -180, 90, -90]
-    geo_lines_dict = {x: y for x, y in zip(geo_lines_dict_keys, geo_lines_dict_values)}
+        if map_boundaries is None:
+            map_boundaries = [-119, -64, 22.0, 50.5]
 
-    states_info_list = [sn[key].lower() for sn in m.states_info]
-    for states_info_index, _ in enumerate(states_info_list):
-        if state == states_info_list[states_info_index]:
-            state_boundary_values = [(m(xy[0], xy[1], True)) for xy in m.states[states_info_index]]
+        # Set the lower left and upper right limits of the bounding box & calculate a center point the projection:
+        self.llcrnrlon, self.urcrnrlon, self.llcrnrlat, self.urcrnrlat = map_boundaries
 
-            geo_lines_dict['llcrnrlat'] = min(geo_lines_dict['llcrnrlat'],
-                                              min(state_boundary_values, key=itemgetter(1))[1] - 0.2)
-            geo_lines_dict['urcrnrlat'] = max(geo_lines_dict['urcrnrlat'],
-                                              max(state_boundary_values, key=itemgetter(1))[1] + 0.2)
-            geo_lines_dict['urcrnrlon'] = max(geo_lines_dict['urcrnrlon'],
-                                              max(state_boundary_values, key=itemgetter(0))[0] + 0.2)
-            geo_lines_dict['llcrnrlon'] = min(geo_lines_dict['llcrnrlon'],
-                                              min(state_boundary_values, key=itemgetter(0))[0] - 0.2)
+    def _initialize_map(self, llcrnrlon=None, llcrnrlat=None, urcrnrlon=None, urcrnrlat=None):
+        """
+        private method to draw the outline of the map
 
-    geo_lines_dict_values = [geo_lines_dict[key] for key in geo_lines_dict_keys]
+        :param llcrnrlon: lower lon boundary
+        :param llcrnrlat: lower lat boundary
+        :param urcrnrlon: upper lon boundary
+        :param urcrnrlat: upper lat boundary
+        :return:
+        """
+        if not all(var is None for var in [llcrnrlon, llcrnrlat, urcrnrlon, urcrnrlat]):
+            self.llcrnrlon, self.llcrnrlat, self.urcrnrlon, self.urcrnrlat = llcrnrlon, llcrnrlat, urcrnrlon, \
+                                                                             urcrnrlat, lon_0, lat_0
 
-    del m
-    m = base_map_usa(state_borders=True, county_borders=True, state_names=False, map_boundaries=geo_lines_dict_values)
+        self.lon_0 = float(self.llcrnrlon + self.urcrnrlon) / 2.0
+        self.lat_0 = float(self.llcrnrlat + self.urcrnrlat) / 2.0
 
-    # for geo_line_key, geo_line_value in geo_lines_dict.items():
-    #     m.__setattr__(geo_line_key, geo_line_value)
-    #     print(m.__getattribute__(geo_line_key))
-    # -119, -64, 22.0, 50.5
+        base_map = Basemap(llcrnrlon=self.llcrnrlon, llcrnrlat=self.llcrnrlat, urcrnrlon=self.urcrnrlon,
+                           urcrnrlat=self.urcrnrlat, lon_0=self.lon_0, lat_0=self.lat_0,
+                           projection='tmerc', resolution='i')
 
-    # state_fip_df = pd.read_csv('./csv_data/fips_state_codes.csv', dtype=str)
-    # if key == 'STATE':
-    #     state_name = state_fip_df[state_fip_df['STATE'] == state]['STATE_NAME'].tolist()[0]
-    # elif key == 'STATE_NAME':
-    #     state_fip_code = state_fip_df[state_fip_df['STATE_NAME'].str.lower() == state.lower()]['STATE'].tolist()[0]
-    # elif key == 'STUSAB':
-    #     state_fip_code = state_fip_df[state_fip_df['STUSAB'].str.lower() == state.lower()]['STATE'].tolist()[0]
-    #     state_name = state_fip_df[state_fip_df['STUSAB'].str.lower() == state.lower()]['STATE_NAME'].tolist()[0]
+        # read basemap info files that are downloaded into the folder basemaps under the project root
 
-    for county_index, county_info in enumerate(m.counties_info):
-        seg = m.counties[county_index]
-        county_fip = county_info['COUNTYFP']
-        state_fip = county_info['STATEFP']
-        for category in categories:
-            if county_fip in data[category] and state_fip == state_fip_given:
-                poly = Polygon(seg, facecolor=category_colour[category])
-                ax.add_patch(poly)
-                break
-            elif state_fip == state_fip_given:
-                poly = Polygon(seg, facecolor=available_colours[-1])
-                ax.add_patch(poly)
+        base_map.readshapefile('./basemaps/cb_2016_us_state_500k', 'states', drawbounds=self.state_borders, color="red",
+                               linewidth=1)
+        base_map.readshapefile('./basemaps/cb_2016_us_county_500k', 'counties', drawbounds=self.county_borders,
+                               color="black", linewidth=0.4)
 
-    patch_list = [Patch(color=category_colour[category], label=str(category)) for category in categories] + [
-        Patch(color=available_colours[-1], label='Unlabelled')]
+        if self.state_names:
+            printed_names = []
+            for state_info, state in zip(base_map.states_info, base_map.states):
+                short_name = state_info['STUSPS']
+                if short_name in printed_names:
+                    continue
+                # center of polygon : can be improved by giving exact locations
+                x, y = np.array(state).mean(axis=0)
+                # You have to align x,y manually to avoid overlapping for little states
+                plt.text(x + .1, y, short_name, ha="center")
+                printed_names.append(short_name)
 
-    legend = plt.legend(handles=patch_list, loc='center left', bbox_to_anchor=(1, 0.5))
-    legend.get_frame().set_color('grey')
+        return base_map
 
-    title = plt.title(title + ' - ' + state_name.upper())
-    title.set_color('grey')
+    def colour_code_usa_country(self, data, title="Title", desc=None, level='county'):
+        """
+        add colours to the us map at a chosen level
 
-    if desc is not None:
-        plt.figtext(x=0.5, y=0, s=desc, wrap=True, horizontalalignment='center', fontsize=8)
+        :param data: dict with category names as the keys
+        :param title: tile of the plot
+        :param desc: description to be added to the plot
+        :param level: level at which we have to fill colors county or state
+        :return:
+        """
+        base_map = self._initialize_map()
+        categories = data.keys()
+        assert len(categories) < 5, "Cannot handle more than 5 categories"
+        category_colour = {category: colour for category, colour in
+                           zip(categories, self.available_colours[:len(categories)])}
 
-    plt.show()
+        # get current axes instance
+        ax = plt.gca()
 
-    return None
+        # sets the colour of the county based on its category, if no category is given for a county then its colour is
+        # white as white is the default colour assigned.
+        if level == 'county':
+            level_info = base_map.counties_info
+            level_xy = base_map.counties
+        elif level == 'state':
+            level_info = base_map.states_info
+            level_xy = base_map.states
+        else:
+            print_error(error='level')
+
+        for level_index, level_info in enumerate(level_info):
+            seg = level_xy[level_index]
+            fp_code = level_info['COUNTYFP']
+            for category in categories:
+                if fp_code in data[category]:
+                    poly = Polygon(seg, facecolor=category_colour[category])
+                    ax.add_patch(poly)
+                    break
+                else:
+                    poly = Polygon(seg, facecolor=self.available_colours[-1])
+                    ax.add_patch(poly)
+
+        patch_list = [Patch(color=category_colour[category], label=str(category)) for category in categories] + [
+            Patch(color=self.available_colours[-1], label='Unlabelled')]
+
+        legend = plt.legend(handles=patch_list, loc='best', bbox_to_anchor=(1, 0.5), ncol=len(categories) + 1)
+        legend.get_frame().set_color('grey')
+
+        title = plt.title(title)
+        title.set_color('grey')
+
+        if desc is not None:
+            plt.figtext(x=0.5, y=0, s=desc, wrap=True, horizontalalignment='center', fontsize=8)
+
+        plt.show()
+
+    def colour_code_usa_state(self, data, state, title="Title", desc=None):
+        """
+        colour coding any state in us and plots the map
+
+        :param data: a dictionary with categories as keys and their values as county fp codes
+        :param state: the state [name/2 letter abbrev/fip code] of our interest
+        :param title: the title for the plot of the map
+        :param desc: decription of the plot of the map
+        :return:
+        """
+
+        assert state, 'set one of the below equal to param state. ' \
+                      '\n 1. state_name \n 2. state_abbrev \n 3. state_fip_code'
+
+        state = state.lower()
+        state_df = pd.read_csv('./csv_data/fips_state_codes.csv', dtype=str)
+        base_map = self._initialize_map()
+
+        if state in state_df['STATE_NAME'].str.lower().tolist():
+            key = 'NAME'
+            state_name = state
+            state_fip_given = state_df[state_df['STATE_NAME'].str.lower() == state]['STATE'].str.lower().tolist()[0]
+        elif state in state_df['STATE']:
+            key = 'STATEFP'
+            state_name = state_df[state_df['STATE'] == state]['STATE_NAME'].str.lower().tolist()[0]
+            state_fip_given = state_df[state_df['STATE'] == state]['STATE'].str.lower().tolist()[0]
+        elif state in state_df['STUSAB'].str.lower().tolist():
+            key = 'STUSPS'
+            state_name = state_df[state_df['STUSAB'] == state.upper()]['STATE_NAME'].str.lower().tolist()[0]
+            state_fip_given = state_df[state_df['STUSAB'] == state.upper()]['STATE'].str.lower().tolist()[0]
+        else:
+            print('state not found')
+
+        categories = data.keys()
+        assert len(categories) < 5, "Cannot handle more than 5 categories"
+        category_colour = {category: colour for category, colour in
+                           zip(categories, self.available_colours[:len(categories)])}
+
+        # current axes instance
+        ax = plt.gca()
+
+        # get map boundaries
+        geo_lines_dict_keys = ['llcrnrlon', 'urcrnrlon', 'llcrnrlat', 'urcrnrlat']
+        geo_lines_dict_values = [180, -180, 90, -90]
+        geo_lines_dict = {x: y for x, y in zip(geo_lines_dict_keys, geo_lines_dict_values)}
+
+        states_info_list = [sn[key].lower() for sn in base_map.states_info]
+        for states_info_index, _ in enumerate(states_info_list):
+            if state == states_info_list[states_info_index]:
+                state_boundary_values = [(base_map(xy[0], xy[1], True))
+                                         for xy in base_map.states[states_info_index]]
+
+                geo_lines_dict['llcrnrlat'] = min(geo_lines_dict['llcrnrlat'],
+                                                  min(state_boundary_values, key=itemgetter(1))[1] - 0.2)
+                geo_lines_dict['urcrnrlat'] = max(geo_lines_dict['urcrnrlat'],
+                                                  max(state_boundary_values, key=itemgetter(1))[1] + 0.2)
+                geo_lines_dict['urcrnrlon'] = max(geo_lines_dict['urcrnrlon'],
+                                                  max(state_boundary_values, key=itemgetter(0))[0] + 0.2)
+                geo_lines_dict['llcrnrlon'] = min(geo_lines_dict['llcrnrlon'],
+                                                  min(state_boundary_values, key=itemgetter(0))[0] - 0.2)
+
+        geo_lines_dict_values = [geo_lines_dict[key] for key in geo_lines_dict_keys]
+
+        self.llcrnrlon, self.urcrnrlon, self.llcrnrlat, self.urcrnrlat = geo_lines_dict_values
+
+        del base_map
+        base_map = self._initialize_map()
+
+        for county_index, county_info in enumerate(base_map.counties_info):
+            seg = base_map.counties[county_index]
+            county_fip = county_info['COUNTYFP']
+            state_fip = county_info['STATEFP']
+            for category in categories:
+                if county_fip in data[category] and state_fip == state_fip_given:
+                    poly = Polygon(seg, facecolor=category_colour[category])
+                    ax.add_patch(poly)
+                    break
+                elif state_fip == state_fip_given:
+                    poly = Polygon(seg, facecolor=self.available_colours[-1])
+                    ax.add_patch(poly)
+
+        patch_list = [Patch(color=category_colour[category], label=str(category)) for category in categories] + [
+            Patch(color=self.available_colours[-1], label='Unlabelled')]
+
+        legend = plt.legend(handles=patch_list, loc='center left', bbox_to_anchor=(1, 0.5))
+        legend.get_frame().set_color('grey')
+
+        title = plt.title(title + ' - ' + state_name.upper())
+        title.set_color('grey')
+
+        if desc is not None:
+            plt.figtext(x=0.5, y=0, s=desc, wrap=True, horizontalalignment='center', fontsize=8)
+
+        plt.show()
+
+        return None
