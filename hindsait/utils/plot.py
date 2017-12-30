@@ -104,9 +104,10 @@ class USMaps:
 
         for level_index, level_info in enumerate(level_info):
             seg = level_xy[level_index]
+            st_code = level_info['STATEFP']
             fp_code = level_info['COUNTYFP']
             for category in categories:
-                if fp_code in data[category]:
+                if (st_code, fp_code) in data[category]:
                     poly = Polygon(seg, facecolor=category_colour[category])
                     ax.add_patch(poly)
                     break
@@ -117,7 +118,7 @@ class USMaps:
         patch_list = [Patch(color=category_colour[category], label=str(category)) for category in categories] + [
             Patch(color=self.available_colours[-1], label='Unlabelled')]
 
-        legend = plt.legend(handles=patch_list, loc='best', bbox_to_anchor=(1, 0.5), ncol=len(categories) + 1)
+        legend = plt.legend(handles=patch_list)
         legend.get_frame().set_color('grey')
 
         title = plt.title(title)
@@ -181,13 +182,13 @@ class USMaps:
                                          for xy in base_map.states[states_info_index]]
 
                 geo_lines_dict['llcrnrlat'] = min(geo_lines_dict['llcrnrlat'],
-                                                  min(state_boundary_values, key=itemgetter(1))[1] - 0.2)
+                                                  min(state_boundary_values, key=itemgetter(1))[1] - 0.5)
                 geo_lines_dict['urcrnrlat'] = max(geo_lines_dict['urcrnrlat'],
-                                                  max(state_boundary_values, key=itemgetter(1))[1] + 0.2)
+                                                  max(state_boundary_values, key=itemgetter(1))[1] + 0.5)
                 geo_lines_dict['urcrnrlon'] = max(geo_lines_dict['urcrnrlon'],
-                                                  max(state_boundary_values, key=itemgetter(0))[0] + 0.2)
+                                                  max(state_boundary_values, key=itemgetter(0))[0] + 0.5)
                 geo_lines_dict['llcrnrlon'] = min(geo_lines_dict['llcrnrlon'],
-                                                  min(state_boundary_values, key=itemgetter(0))[0] - 0.2)
+                                                  min(state_boundary_values, key=itemgetter(0))[0] - 0.5)
 
         geo_lines_dict_values = [geo_lines_dict[key] for key in geo_lines_dict_keys]
 
@@ -201,7 +202,7 @@ class USMaps:
             county_fip = county_info['COUNTYFP']
             state_fip = county_info['STATEFP']
             for category in categories:
-                if county_fip in data[category] and state_fip == state_fip_given:
+                if (state_fip, county_fip) in data[category] and state_fip == state_fip_given:
                     poly = Polygon(seg, facecolor=category_colour[category])
                     ax.add_patch(poly)
                     break
