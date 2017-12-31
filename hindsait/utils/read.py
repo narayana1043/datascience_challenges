@@ -7,8 +7,8 @@ class ReadFiles:
 
     def __init__(self, path_in, path_out):
 
-        self.path_in = path_in
-        self.path_out = path_out
+        self.path_in = path_in + '/'
+        self.path_out = path_out + '/'
 
     def read_sas_doc(self, return_df=False, write_df=False):
         """
@@ -45,7 +45,7 @@ class ReadFiles:
         print(sas_doc_df.head())
 
         if write_df:
-            sas_doc_df.to_csv(path_out, index=False)
+            sas_doc_df.to_csv(path_out+'sas_doc.csv', index=False)
 
         if return_df:
             return sas_doc_df
@@ -84,7 +84,7 @@ class ReadFiles:
         # print(len(data_df.columns))
 
         if write_df:
-            data_df.to_csv(path_out, index=False)
+            data_df.to_csv(path_out+'data.csv', index=False)
 
         if return_df:
             return data_df
@@ -121,7 +121,7 @@ class ReadFiles:
         excel_doc_df['field'] = excel_doc_df['field'].str.lower().str.replace('-', '')
 
         if write_df:
-            excel_doc_df.to_csv(path_out, index=False)
+            excel_doc_df.to_csv(path_out+'excel_doc.csv', index=False)
 
         if return_df:
             return excel_doc_df
@@ -146,7 +146,7 @@ class ReadFiles:
 
         # print(fip_codes_df.head())
         if write_df:
-            fip_codes_df.to_csv(path_out, index=False)
+            fip_codes_df.to_csv(path_out+'fips_state_codes.csv', index=False)
 
         if return_df:
             return fip_codes_df
@@ -183,7 +183,7 @@ class ReadFiles:
         excel_doc_df = excel_doc_df[[col_name for col_name in col_name_list]]
 
         if write_df:
-            excel_doc_df.to_csv(path_out, index=False)
+            excel_doc_df.to_csv(path_out+'fips_all_codes.csv', index=False)
 
         if return_df:
             return excel_doc_df
