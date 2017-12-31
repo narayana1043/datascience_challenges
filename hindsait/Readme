@@ -1,0 +1,11 @@
+For first time use
+
+1. add hindsait to the sources roor
+
+2. call main.py with parameter True
+    i.  It setups the files required to plot and preprocess the data
+    ii. It should output a couple of base maps on some feature. : These are to test the code
+            a. picture 1: shows the whole us map
+            b. picture 2: shows the one particular state in us.
+
+3. check the feature_maps.ipynb for additional details
