@@ -1,6 +1,6 @@
 from mpl_toolkits.basemap import Basemap
 from matplotlib.patches import Polygon, Patch
-from utils.errors import print_error
+from utils.utils import print_error
 from operator import itemgetter
 import matplotlib.pyplot as plt
 import numpy as np
@@ -42,7 +42,7 @@ class USMaps:
         """
         if not all(var is None for var in [llcrnrlon, llcrnrlat, urcrnrlon, urcrnrlat]):
             self.llcrnrlon, self.llcrnrlat, self.urcrnrlon, self.urcrnrlat = llcrnrlon, llcrnrlat, urcrnrlon, \
-                                                                             urcrnrlat, lon_0, lat_0
+                                                                             urcrnrlat
 
         self.lon_0 = float(self.llcrnrlon + self.urcrnrlon) / 2.0
         self.lat_0 = float(self.llcrnrlat + self.urcrnrlat) / 2.0
@@ -115,8 +115,8 @@ class USMaps:
                     poly = Polygon(seg, facecolor=self.available_colours[-1])
                     ax.add_patch(poly)
 
-        patch_list = [Patch(color=category_colour[category], label=str(category)) for category in categories] + [
-            Patch(color=self.available_colours[-1], label='Unlabelled')]
+        patch_list = [Patch(color=category_colour[category], label=str(category) + " " + str(len(data[category])))
+                      for category in categories] + [Patch(color=self.available_colours[-1])]
 
         legend = plt.legend(handles=patch_list)
         legend.get_frame().set_color('grey')
@@ -210,10 +210,13 @@ class USMaps:
                     poly = Polygon(seg, facecolor=self.available_colours[-1])
                     ax.add_patch(poly)
 
-        patch_list = [Patch(color=category_colour[category], label=str(category)) for category in categories] + [
-            Patch(color=self.available_colours[-1], label='Unlabelled')]
+        patch_list = [Patch(color=category_colour[category], label=str(category) + " " + str(len(data[category])))
+                      for category in categories] + [
+            Patch(color=self.available_colours[-1],
+                  label='Unlabelled' + " " + str(3143 - sum([len(data[category]) for category in categories])))]
 
-        legend = plt.legend(handles=patch_list, loc='center left', bbox_to_anchor=(1, 0.5))
+        # legend = plt.legend(handles=patch_list, loc='center left', bbox_to_anchor=(1, 0.5))
+        legend = plt.legend(handles=patch_list)
         legend.get_frame().set_color('grey')
 
         title = plt.title(title + ' - ' + state_name.upper())

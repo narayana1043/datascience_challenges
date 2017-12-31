@@ -32,7 +32,7 @@ def extract_feature_data(data, feature, state='all'):
     return feature_values_dict
 
 
-def get_features(data, doc_df,count_unique_feature_values):
+def get_features(data, doc_df, count_unique_feature_values):
     """
     counts the unique feature_values for each feature in the dataframe and return only the count value of interest with
     the features documentation.
@@ -52,4 +52,5 @@ def get_features(data, doc_df,count_unique_feature_values):
     feature_df = doc_df[doc_df.field.isin(feature_list)]
     # print(feature_df)
     return feature_df
+
 
