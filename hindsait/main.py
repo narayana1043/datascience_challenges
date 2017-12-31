@@ -7,7 +7,9 @@ import feature_engg
 def main(get_files = False):
 
     if get_files == True:
-        dir_list = ['./csv_data/', './vincent_map_data/', './basemaps/']
+        dir_list = ['./csv_data/',
+                    # './vincent_map_data/',
+                    './basemaps/']
 
         # below code is not required once the files are downloaded and processed
         # ********************************************************************** #
@@ -46,13 +48,13 @@ def main(get_files = False):
 
     # extract data
     feature_values_dict_country = feature_engg.extract_feature_data(data=data, feature=feature, state='All')
-    feature_values_dict_state = feature_engg.extract_feature_data(data=data, feature=feature, state='Alabama')
+    feature_values_dict_state = feature_engg.extract_feature_data(data=data, feature=feature, state='CA')
 
     US_map = plot.USMaps(state_borders=True,county_borders=True, state_names=False)
 
     US_map.colour_code_usa_country(data=feature_values_dict_country, title=plt_title, desc=plt_desc)
 
-    US_map.colour_code_usa_state(data=feature_values_dict_state, state='TEXAS', title=plt_title, desc=plt_desc)
+    US_map.colour_code_usa_state(data=feature_values_dict_state, state='CA', title=plt_title, desc=plt_desc)
 
 
 
