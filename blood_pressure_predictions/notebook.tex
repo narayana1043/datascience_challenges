@@ -1,0 +1,789 @@
+
+% Default to the notebook output style
+
+    
+
+
+% Inherit from the specified cell style.
+
+
+
+
+    
+\documentclass[11pt]{article}
+
+    
+    
+    \usepackage[T1]{fontenc}
+    % Nicer default font (+ math font) than Computer Modern for most use cases
+    \usepackage{mathpazo}
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % We will generate all images so they have a width \maxwidth. This means
+    % that they will get their normal width if they fit onto the page, but
+    % are scaled down if they would overflow the margins.
+    \makeatletter
+    \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+    \else\Gin@nat@width\fi}
+    \makeatother
+    \let\Oldincludegraphics\includegraphics
+    % Set max figure width to be 80% of text width, for now hardcoded.
+    \renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=.8\maxwidth]{#1}}
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionLabelFormat{nolabel}{}
+    \captionsetup{labelformat=nolabel}
+
+    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    
+
+    
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatability definitions
+    \def\gt{>}
+    \def\lt{<}
+    % Document parameters
+    \title{blood\_pressure\_analysis}
+    
+    
+    
+
+    % Pygments definitions
+    
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % Exact colors from NB
+    \definecolor{incolor}{rgb}{0.0, 0.0, 0.5}
+    \definecolor{outcolor}{rgb}{0.545, 0.0, 0.0}
+
+
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+    \begin{document}
+    
+    
+    \maketitle
+    
+    
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}11}]:} \PY{c+c1}{\PYZsh{} libraries}
+         \PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+         \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+         \PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+         \PY{k+kn}{from} \PY{n+nn}{IPython}\PY{n+nn}{.}\PY{n+nn}{display} \PY{k}{import} \PY{n}{display}
+         \PY{k+kn}{from} \PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{stats} \PY{k}{import} \PY{n}{ttest\PYZus{}ind}
+         \PY{k+kn}{from} \PY{n+nn}{datetime} \PY{k}{import} \PY{n}{timedelta}
+         \PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{patches} \PY{k}{as} \PY{n+nn}{mpatches}
+         \PY{c+c1}{\PYZsh{} import sklearn}
+\end{Verbatim}
+
+
+    \hypertarget{read-data}{%
+\subsection{Read data}\label{read-data}}
+
+\begin{verbatim}
+Parse the dates
+\end{verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}3}]:} \PY{n}{date\PYZus{}parser} \PY{o}{=} \PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{pd}\PY{o}{.}\PY{n}{datetime}\PY{o}{.}\PY{n}{strptime}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{m/}\PY{l+s+si}{\PYZpc{}d}\PY{l+s+s1}{/}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{y}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{medication\PYZus{}df\PYZus{}raw} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{./medication.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{parse\PYZus{}dates}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{date\PYZus{}parser}\PY{o}{=}\PY{n}{date\PYZus{}parser}\PY{p}{)}
+        \PY{n}{user\PYZus{}df\PYZus{}raw} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{./users.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{parse\PYZus{}dates}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+        \PY{n}{blood\PYZus{}pressure\PYZus{}df\PYZus{}raw} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{./blood\PYZus{}pressure[1].csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{parse\PYZus{}dates}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{date\PYZus{}parser}\PY{o}{=}\PY{n}{date\PYZus{}parser}\PY{p}{)}
+        \PY{n}{bp\PYZus{}medication\PYZus{}df\PYZus{}raw} \PY{o}{=} \PY{n}{blood\PYZus{}pressure\PYZus{}df\PYZus{}raw}\PY{o}{.}\PY{n}{merge}\PY{p}{(}\PY{n}{medication\PYZus{}df\PYZus{}raw}\PY{p}{,} \PY{n}{on}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{user\PYZus{}id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{how}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{outer}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    \hypertarget{create-required-features}{%
+\subsection{Create required features}\label{create-required-features}}
+
+\begin{verbatim}
+start_date
+end_date
+Total_days_on_proteus
+\end{verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}4}]:} \PY{n}{bp\PYZus{}grouped} \PY{o}{=} \PY{n}{blood\PYZus{}pressure\PYZus{}df\PYZus{}raw}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{user\PYZus{}id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{user\PYZus{}id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{start\PYZus{}dates} \PY{o}{=} \PY{n}{bp\PYZus{}grouped}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{rename}\PY{p}{(}\PY{n}{columns}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{start\PYZus{}date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{\PYZcb{}}\PY{p}{)}
+        \PY{n}{end\PYZus{}dates} \PY{o}{=} \PY{n}{bp\PYZus{}grouped}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{rename}\PY{p}{(}\PY{n}{columns}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{end\PYZus{}date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{\PYZcb{}}\PY{p}{)}
+        \PY{n}{dates} \PY{o}{=} \PY{n}{start\PYZus{}dates}\PY{o}{.}\PY{n}{join}\PY{p}{(}\PY{n}{end\PYZus{}dates}\PY{p}{)}
+        \PY{n}{dates}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Total\PYZus{}days\PYZus{}on\PYZus{}proteus}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{dates}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{end\PYZus{}date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{\PYZhy{}} \PY{n}{dates}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{start\PYZus{}date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+        \PY{n}{user\PYZus{}df\PYZus{}raw} \PY{o}{=} \PY{n}{user\PYZus{}df\PYZus{}raw}\PY{o}{.}\PY{n}{merge}\PY{p}{(}\PY{n}{dates}\PY{o}{.}\PY{n}{reset\PYZus{}index}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{on}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{user\PYZus{}id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{user\PYZus{}df\PYZus{}raw}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{mid\PYZus{}date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{user\PYZus{}df\PYZus{}raw}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{start\PYZus{}date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{+}  \PY{n}{timedelta}\PY{p}{(}\PY{n}{days}\PY{o}{=}\PY{l+m+mi}{29}\PY{p}{)}
+        
+        \PY{n}{bp\PYZus{}medication\PYZus{}df\PYZus{}raw} \PY{o}{=} \PY{n}{bp\PYZus{}medication\PYZus{}df\PYZus{}raw}\PY{o}{.}\PY{n}{merge}\PY{p}{(}\PY{n}{user\PYZus{}df\PYZus{}raw}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{user\PYZus{}id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}  \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{mid\PYZus{}date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{p}{,} \PY{n}{on}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{user\PYZus{}id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{bp\PYZus{}medication\PYZus{}df\PYZus{}raw} \PY{o}{=} \PY{n}{bp\PYZus{}medication\PYZus{}df\PYZus{}raw}\PY{o}{.}\PY{n}{assign}\PY{p}{(}
+            \PY{n}{is\PYZus{}month1}\PY{o}{=}\PY{n}{pd}\PY{o}{.}\PY{n}{Series}\PY{p}{(}\PY{n}{bp\PYZus{}medication\PYZus{}df\PYZus{}raw}\PY{o}{.}\PY{n}{date} \PY{o}{\PYZlt{}} \PY{n}{bp\PYZus{}medication\PYZus{}df\PYZus{}raw}\PY{o}{.}\PY{n}{mid\PYZus{}date}\PY{p}{,} 
+                                \PY{n}{index}\PY{o}{=}\PY{n}{bp\PYZus{}medication\PYZus{}df\PYZus{}raw}\PY{o}{.}\PY{n}{index}\PY{p}{)}\PY{p}{,}
+            \PY{n}{is\PYZus{}month2}\PY{o}{=}\PY{n}{pd}\PY{o}{.}\PY{n}{Series}\PY{p}{(}\PY{n}{bp\PYZus{}medication\PYZus{}df\PYZus{}raw}\PY{o}{.}\PY{n}{date} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{n}{bp\PYZus{}medication\PYZus{}df\PYZus{}raw}\PY{o}{.}\PY{n}{mid\PYZus{}date}\PY{p}{,} 
+                                \PY{n}{index}\PY{o}{=}\PY{n}{bp\PYZus{}medication\PYZus{}df\PYZus{}raw}\PY{o}{.}\PY{n}{index}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \hypertarget{find-patients-with-missing-data}{%
+\subsection{Find patients with missing
+data}\label{find-patients-with-missing-data}}
+
+Create a list of users who fail the below cases
+
+\begin{verbatim}
+Check if all the patients have their medication data (patch detect ?) 
+Check if all the patients blood pressures are reported without any missing data
+Check if there are zeros in sbp and dbp columns
+Check patients for gaps between injections 
+Check for abnormalties in the data reported
+Check if the values for the sbp/dbp are in accpeted ranges (in general > 0)
+    . SBP between 90 and 240
+    . DBP between 40 and 160
+\end{verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{c+c1}{\PYZsh{} Check for patients with sbp=0 or dbp=0}
+        \PY{n}{zero\PYZus{}bp\PYZus{}users} \PY{o}{=} \PY{n}{bp\PYZus{}medication\PYZus{}df\PYZus{}raw}\PY{p}{[}\PY{p}{(}\PY{n}{bp\PYZus{}medication\PYZus{}df\PYZus{}raw}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{dbp}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{)} \PY{o}{|} 
+                                             \PY{p}{(}\PY{n}{bp\PYZus{}medication\PYZus{}df\PYZus{}raw}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{sbp}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{)}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{user\PYZus{}id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{tolist}\PY{p}{(}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{users with zero values in sbp/dbp : }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{zero\PYZus{}bp\PYZus{}users}\PY{p}{)}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} Check patients with missing data}
+        \PY{n}{na\PYZus{}users} \PY{o}{=} \PY{n}{bp\PYZus{}medication\PYZus{}df\PYZus{}raw}\PY{p}{[}\PY{p}{(}\PY{n}{bp\PYZus{}medication\PYZus{}df\PYZus{}raw}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{pill\PYZus{}detect}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{isna}\PY{p}{(}\PY{p}{)}\PY{p}{)} \PY{o}{|} 
+                                          \PY{p}{(}\PY{n}{bp\PYZus{}medication\PYZus{}df\PYZus{}raw}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{sbp}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{isna}\PY{p}{(}\PY{p}{)}\PY{p}{)} \PY{o}{|} 
+                                          \PY{p}{(}\PY{n}{bp\PYZus{}medication\PYZus{}df\PYZus{}raw}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{dbp}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{isna}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{user\PYZus{}id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{users with missing pill\PYZus{}detect/sbp/dbp}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{na\PYZus{}users}\PY{p}{)}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} Check patients for gaps between injections }
+        \PY{n}{bp\PYZus{}medication\PYZus{}df\PYZus{}raw}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{next\PYZus{}date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{bp\PYZus{}medication\PYZus{}df\PYZus{}raw}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{user\PYZus{}id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{shift}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}
+        \PY{n}{bp\PYZus{}medication\PYZus{}df\PYZus{}raw}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{follow\PYZus{}up\PYZus{}gap}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{bp\PYZus{}medication\PYZus{}df\PYZus{}raw}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{next\PYZus{}date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{\PYZhy{}} \PY{n}{bp\PYZus{}medication\PYZus{}df\PYZus{}raw}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+        \PY{n}{bp\PYZus{}medication\PYZus{}df\PYZus{}raw}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{follow\PYZus{}up\PYZus{}gap}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{user\PYZus{}id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{nunique}\PY{p}{(}\PY{p}{)}
+        \PY{n}{gap\PYZus{}users} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+        \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{6}\PY{p}{)}\PY{p}{:}
+            \PY{n}{gap\PYZus{}users}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n}{bp\PYZus{}medication\PYZus{}df\PYZus{}raw}\PY{p}{[}\PY{n}{bp\PYZus{}medication\PYZus{}df\PYZus{}raw}\PY{p}{[}
+                \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{follow\PYZus{}up\PYZus{}gap}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{dt}\PY{o}{.}\PY{n}{days} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{n}{i}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{user\PYZus{}id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{tolist}\PY{p}{(}\PY{p}{)}
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{users with}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{i}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{days or greater gap between medication follow up}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{gap\PYZus{}users}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} Check if any users have abnormal values in sbp/dbp}
+        \PY{n}{abnormal\PYZus{}users} \PY{o}{=} \PY{n}{bp\PYZus{}medication\PYZus{}df\PYZus{}raw}\PY{p}{[}\PY{o}{\PYZti{}}\PY{p}{(}\PY{p}{(}\PY{n}{bp\PYZus{}medication\PYZus{}df\PYZus{}raw}\PY{o}{.}\PY{n}{sbp} \PY{o}{\PYZlt{}} \PY{l+m+mi}{240}\PY{p}{)} \PY{o}{|} 
+                                                \PY{p}{(}\PY{n}{bp\PYZus{}medication\PYZus{}df\PYZus{}raw}\PY{o}{.}\PY{n}{sbp} \PY{o}{\PYZgt{}} \PY{l+m+mi}{90}\PY{p}{)} \PY{o}{|} 
+                                                \PY{p}{(}\PY{n}{bp\PYZus{}medication\PYZus{}df\PYZus{}raw}\PY{o}{.}\PY{n}{dbp} \PY{o}{\PYZgt{}} \PY{l+m+mi}{40}\PY{p}{)} \PY{o}{|} 
+                                                \PY{p}{(}\PY{n}{bp\PYZus{}medication\PYZus{}df\PYZus{}raw}\PY{o}{.}\PY{n}{dbp} \PY{o}{\PYZlt{}} \PY{l+m+mi}{160}\PY{p}{)}\PY{p}{)}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{user\PYZus{}id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{tolist}\PY{p}{(}\PY{p}{)}
+        
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{users with abnormal  values in sbp/dbp}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{abnormal\PYZus{}users}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+users with zero values in sbp/dbp :  20
+users with missing pill\_detect/sbp/dbp 10
+users with 1 days or greater gap between medication follow up 4410
+users with 2 days or greater gap between medication follow up 3811
+users with 3 days or greater gap between medication follow up 290
+users with 4 days or greater gap between medication follow up 10
+users with 5 days or greater gap between medication follow up 2
+users with abnormal  values in sbp/dbp 6
+
+    \end{Verbatim}
+
+    \hypertarget{drop-pateints-who-are-identified-in-the-above-step-from-further-analysis}{%
+\subsection{Drop pateints who are identified in the above step from
+further
+analysis}\label{drop-pateints-who-are-identified-in-the-above-step-from-further-analysis}}
+
+\begin{verbatim}
+From above step it is clear that there are 30 patients with missing data. Drop them
+Drop the users where the users with follow up gap is >= 4 days.
+Drop users who have zeros in sbp or dbp
+\end{verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}6}]:} \PY{c+c1}{\PYZsh{} filter patients in all dataframes}
+        \PY{n}{drop\PYZus{}users} \PY{o}{=} \PY{p}{[}\PY{o}{*}\PY{n}{na\PYZus{}users}\PY{p}{,} \PY{o}{*}\PY{n}{gap\PYZus{}users}\PY{p}{[}\PY{l+m+mi}{4}\PY{p}{]}\PY{p}{,} \PY{o}{*}\PY{n}{zero\PYZus{}bp\PYZus{}users}\PY{p}{,} \PY{o}{*}\PY{n}{abnormal\PYZus{}users}\PY{p}{]}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Removing}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{drop\PYZus{}users}\PY{p}{)}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{users from the data}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        
+        \PY{n}{user\PYZus{}df} \PY{o}{=} \PY{n}{user\PYZus{}df\PYZus{}raw}\PY{p}{[}\PY{o}{\PYZti{}} \PY{n}{user\PYZus{}df\PYZus{}raw}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{user\PYZus{}id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{isin}\PY{p}{(}\PY{n}{drop\PYZus{}users}\PY{p}{)}\PY{p}{]}
+        \PY{n}{bp\PYZus{}medication\PYZus{}df} \PY{o}{=} \PY{n}{bp\PYZus{}medication\PYZus{}df\PYZus{}raw}\PY{p}{[}\PY{o}{\PYZti{}} \PY{n}{bp\PYZus{}medication\PYZus{}df\PYZus{}raw}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{user\PYZus{}id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{isin}\PY{p}{(}\PY{n}{drop\PYZus{}users}\PY{p}{)}\PY{p}{]}
+        
+        \PY{n}{display}\PY{p}{(}\PY{n}{user\PYZus{}df}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+        \PY{n}{display}\PY{p}{(}\PY{n}{user\PYZus{}df}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+        \PY{n}{display}\PY{p}{(}\PY{n}{bp\PYZus{}medication\PYZus{}df}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+        \PY{n}{display}\PY{p}{(}\PY{n}{bp\PYZus{}medication\PYZus{}df}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Removing 46 users from the data
+
+    \end{Verbatim}
+
+    
+    \begin{verbatim}
+   user_id  gender  bmi start_date   end_date Total_days_on_proteus   mid_date
+0   100000  female   39 2017-04-24 2017-06-22               59 days 2017-05-23
+2   100002  female   28 2017-05-06 2017-07-04               59 days 2017-06-04
+3   100003    male   25 2017-04-25 2017-06-22               58 days 2017-05-24
+6   100006    male   32 2017-04-20 2017-06-18               59 days 2017-05-19
+7   100007    male   43 2017-04-30 2017-06-28               59 days 2017-05-29
+    \end{verbatim}
+
+    
+    
+    \begin{verbatim}
+             user_id          bmi    Total_days_on_proteus
+count    4370.000000  4370.000000                     4370
+mean   102205.209153    28.705721  58 days 22:09:56.430205
+std      1272.116133     7.220136   0 days 06:43:09.976834
+min    100000.000000    18.000000         56 days 00:00:00
+25%    101104.250000    25.000000         59 days 00:00:00
+50%    102201.500000    28.000000         59 days 00:00:00
+75%    103305.750000    31.000000         59 days 00:00:00
+max    104409.000000   100.000000         59 days 00:00:00
+    \end{verbatim}
+
+    
+    
+    \begin{verbatim}
+   user_id       date    sbp    dbp pill_detect   mid_date  is_month1  \
+0   100000 2017-04-24  153.0  108.0       False 2017-05-23       True   
+1   100000 2017-04-25  152.0  106.0        True 2017-05-23       True   
+2   100000 2017-04-26  151.0  106.0        True 2017-05-23       True   
+3   100000 2017-04-27  154.0  109.0       False 2017-05-23       True   
+4   100000 2017-04-28  155.0  100.0       False 2017-05-23       True   
+
+   is_month2  next_date follow_up_gap  
+0      False 2017-04-25        1 days  
+1      False 2017-04-26        1 days  
+2      False 2017-04-27        1 days  
+3      False 2017-04-28        1 days  
+4      False 2017-04-29        1 days  
+    \end{verbatim}
+
+    
+    
+    \begin{verbatim}
+             user_id            sbp            dbp           follow_up_gap
+count  252872.000000  252872.000000  252872.000000                  248502
+mean   102204.375700     150.309726     103.602352  1 days 00:52:07.063766
+std      1271.625645       5.346328       3.891901  0 days 04:37:44.448571
+min    100000.000000      99.000000      92.000000         1 days 00:00:00
+25%    101104.000000     147.000000     101.000000         1 days 00:00:00
+50%    102200.000000     150.000000     104.000000         1 days 00:00:00
+75%    103305.000000     154.000000     107.000000         1 days 00:00:00
+max    104409.000000     180.000000     154.000000         3 days 00:00:00
+    \end{verbatim}
+
+    
+    \hypertarget{question-1}{%
+\subsection{Question 1}\label{question-1}}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}18}]:} \PY{o}{\PYZpc{}} \PY{n}{matplotlib} \PY{n}{notebook}
+         \PY{n}{bp\PYZus{}medication\PYZus{}df}\PY{o}{.}\PY{n}{sbp}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{bins}\PY{o}{=}\PY{l+m+mi}{30}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{blue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{bp\PYZus{}medication\PYZus{}df}\PY{o}{.}\PY{n}{dbp}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{bins}\PY{o}{=}\PY{l+m+mi}{30}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{orange}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Plot of SBP and DBP among patients}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+         \PY{n}{blue\PYZus{}patch} \PY{o}{=} \PY{n}{mpatches}\PY{o}{.}\PY{n}{Patch}\PY{p}{(}\PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{blue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{SBP}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{oragne\PYZus{}patch} \PY{o}{=} \PY{n}{mpatches}\PY{o}{.}\PY{n}{Patch}\PY{p}{(}\PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{orange}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DBP}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{n}{handles}\PY{o}{=}\PY{p}{[}\PY{n}{blue\PYZus{}patch}\PY{p}{,} \PY{n}{oragne\PYZus{}patch}\PY{p}{]}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    
+    \begin{verbatim}
+<IPython.core.display.Javascript object>
+    \end{verbatim}
+
+    
+    
+    \begin{verbatim}
+<IPython.core.display.HTML object>
+    \end{verbatim}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}17}]:} \PY{o}{\PYZpc{}} \PY{n}{matplotlib} \PY{n}{notebook}
+         \PY{n}{bp\PYZus{}medication\PYZus{}df}\PY{p}{[}\PY{n}{bp\PYZus{}medication\PYZus{}df}\PY{o}{.}\PY{n}{pill\PYZus{}detect} \PY{o}{==} \PY{k+kc}{True}\PY{p}{]}\PY{o}{.}\PY{n}{sbp}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{bins}\PY{o}{=}\PY{l+m+mi}{30}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{green}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{bp\PYZus{}medication\PYZus{}df}\PY{p}{[}\PY{n}{bp\PYZus{}medication\PYZus{}df}\PY{o}{.}\PY{n}{pill\PYZus{}detect} \PY{o}{==} \PY{k+kc}{False}\PY{p}{]}\PY{o}{.}\PY{n}{sbp}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{bins}\PY{o}{=}\PY{l+m+mi}{30}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{red}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{bp\PYZus{}medication\PYZus{}df}\PY{p}{[}\PY{n}{bp\PYZus{}medication\PYZus{}df}\PY{o}{.}\PY{n}{pill\PYZus{}detect} \PY{o}{==} \PY{k+kc}{True}\PY{p}{]}\PY{o}{.}\PY{n}{dbp}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{bins}\PY{o}{=}\PY{l+m+mi}{30}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{blue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{bp\PYZus{}medication\PYZus{}df}\PY{p}{[}\PY{n}{bp\PYZus{}medication\PYZus{}df}\PY{o}{.}\PY{n}{pill\PYZus{}detect} \PY{o}{==} \PY{k+kc}{False}\PY{p}{]}\PY{o}{.}\PY{n}{dbp}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{bins}\PY{o}{=}\PY{l+m+mi}{30}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{orange}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         
+         \PY{n}{blue\PYZus{}patch} \PY{o}{=} \PY{n}{mpatches}\PY{o}{.}\PY{n}{Patch}\PY{p}{(}\PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{blue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DBP with pill}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{oragne\PYZus{}patch} \PY{o}{=} \PY{n}{mpatches}\PY{o}{.}\PY{n}{Patch}\PY{p}{(}\PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{orange}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DBP without pill}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{green\PYZus{}patch} \PY{o}{=} \PY{n}{mpatches}\PY{o}{.}\PY{n}{Patch}\PY{p}{(}\PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{green}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{SBP with pill}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{red\PYZus{}patch} \PY{o}{=} \PY{n}{mpatches}\PY{o}{.}\PY{n}{Patch}\PY{p}{(}\PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{red}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{SBP without pill}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{n}{handles}\PY{o}{=}\PY{p}{[}\PY{n}{blue\PYZus{}patch}\PY{p}{,} \PY{n}{oragne\PYZus{}patch}\PY{p}{,} \PY{n}{green\PYZus{}patch}\PY{p}{,} \PY{n}{red\PYZus{}patch}\PY{p}{]}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{SBP and DBP measurements for patients with \PYZam{} without pill}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    
+    \begin{verbatim}
+<IPython.core.display.Javascript object>
+    \end{verbatim}
+
+    
+    
+    \begin{verbatim}
+<IPython.core.display.HTML object>
+    \end{verbatim}
+
+    
+    Data holds the normality assumption and a shift in the gaussian is
+noticed in both sbp \& dbp when the patients are not pill.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}8}]:} \PY{n}{pilldetect\PYZus{}true} \PY{o}{=} \PY{n}{bp\PYZus{}medication\PYZus{}df}\PY{p}{[}\PY{n}{bp\PYZus{}medication\PYZus{}df}\PY{o}{.}\PY{n}{pill\PYZus{}detect} \PY{o}{==} \PY{k+kc}{True}\PY{p}{]}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}
+            \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{user\PYZus{}id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{as\PYZus{}index}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{sbp}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{dbp}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+        \PY{n}{pilldetect\PYZus{}false} \PY{o}{=} \PY{n}{bp\PYZus{}medication\PYZus{}df}\PY{p}{[}\PY{n}{bp\PYZus{}medication\PYZus{}df}\PY{o}{.}\PY{n}{pill\PYZus{}detect} \PY{o}{==} \PY{k+kc}{False}\PY{p}{]}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}
+            \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{user\PYZus{}id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{as\PYZus{}index}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{sbp}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{dbp}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+        \PY{n}{sbp\PYZus{}dbp\PYZus{}means} \PY{o}{=} \PY{n}{pilldetect\PYZus{}false}\PY{o}{.}\PY{n}{merge}\PY{p}{(}\PY{n}{pilldetect\PYZus{}true}\PY{p}{,} \PY{n}{on}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{user\PYZus{}id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{suffixes}\PY{o}{=}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZus{}no\PYZus{}pill}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZus{}taken\PYZus{}pill}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+        \PY{n}{display}\PY{p}{(}\PY{n}{sbp\PYZus{}dbp\PYZus{}means}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+        \PY{n}{display}\PY{p}{(}\PY{n}{sbp\PYZus{}dbp\PYZus{}means}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    
+    \begin{verbatim}
+   user_id  sbp_no_pill  dbp_no_pill  sbp_taken_pill  dbp_taken_pill
+0   100000   154.043478   104.782609      153.750000      106.416667
+1   100002   144.564103   102.333333      143.388889      102.833333
+2   100003   140.971429   100.828571      141.210526      100.315789
+3   100006   150.256410   104.205128      150.055556      102.444444
+4   100007   152.054054   104.216216      151.052632      104.368421
+    \end{verbatim}
+
+    
+    
+    \begin{verbatim}
+             user_id  sbp_no_pill  dbp_no_pill  sbp_taken_pill  dbp_taken_pill
+count    4370.000000  4370.000000  4370.000000     4370.000000     4370.000000
+mean   102205.209153   150.501396   103.669229      150.041041      103.508420
+std      1272.116133     4.891933     1.746519        4.876321        1.827979
+min    100000.000000   136.567568    98.062500      135.969697       97.571429
+25%    101104.250000   147.118723   102.472222      146.714286      102.238095
+50%    102201.500000   150.333333   103.606061      149.769231      103.428571
+75%    103305.750000   153.547078   104.779810      153.071429      104.695652
+max    104409.000000   171.897436   111.333333      171.285714      111.300000
+    \end{verbatim}
+
+    
+    \hypertarget{significance-testing}{%
+\subsection{Significance testing}\label{significance-testing}}
+
+\begin{verbatim}
+variances are almost same --> 2 sided 2 sample T-test. 
+If looking for just one-sided p-value then divide the p-value by 2
+\end{verbatim}
+
+    \hypertarget{t---test-assumptions}{%
+\paragraph{T - test Assumptions}\label{t---test-assumptions}}
+
+\begin{verbatim}
+1. Continous measurements (satisified)
+2. Random subset of population (my assumption)
+3. Data follows approximately normal distribution (satisified. see above graphs)
+4. Reason large sample (4000 samples is a decent sample size)
+5. Homogeneity of variance (Satisfied see std in the describe method on the dataframe above)
+\end{verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}9}]:} \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{2 sample T\PYZhy{}test for sbp: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{ttest\PYZus{}ind}\PY{p}{(}\PY{n}{sbp\PYZus{}dbp\PYZus{}means}\PY{o}{.}\PY{n}{sbp\PYZus{}no\PYZus{}pill}\PY{p}{,} \PY{n}{sbp\PYZus{}dbp\PYZus{}means}\PY{o}{.}\PY{n}{sbp\PYZus{}taken\PYZus{}pill}\PY{p}{)}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{2 sample T\PYZhy{}test for dbp: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{ttest\PYZus{}ind}\PY{p}{(}\PY{n}{sbp\PYZus{}dbp\PYZus{}means}\PY{o}{.}\PY{n}{dbp\PYZus{}no\PYZus{}pill}\PY{p}{,} \PY{n}{sbp\PYZus{}dbp\PYZus{}means}\PY{o}{.}\PY{n}{dbp\PYZus{}taken\PYZus{}pill}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+2 sample T-test for sbp:  Ttest\_indResult(statistic=4.4058631817251515, pvalue=1.0661989777765571e-05)
+2 sample T-test for dbp:  Ttest\_indResult(statistic=4.2047234590195437, pvalue=2.6400809366679859e-05)
+
+    \end{Verbatim}
+
+    Low p-value and a positive test statistic(a=no\_pill, b=taken\_pill) in
+the tests for both sbp and dbp impily that skipping medication increases
+the risk of having a high sbp/dbp.
+
+    \hypertarget{question-2}{%
+\subsection{Question 2}\label{question-2}}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}12}]:} \PY{n}{bp\PYZus{}medication\PYZus{}df}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}12}]:}    user\_id       date    sbp    dbp pill\_detect   mid\_date  is\_month1  \textbackslash{}
+         0   100000 2017-04-24  153.0  108.0       False 2017-05-23       True   
+         1   100000 2017-04-25  152.0  106.0        True 2017-05-23       True   
+         2   100000 2017-04-26  151.0  106.0        True 2017-05-23       True   
+         3   100000 2017-04-27  154.0  109.0       False 2017-05-23       True   
+         4   100000 2017-04-28  155.0  100.0       False 2017-05-23       True   
+         
+            is\_month2  next\_date follow\_up\_gap  
+         0      False 2017-04-25        1 days  
+         1      False 2017-04-26        1 days  
+         2      False 2017-04-27        1 days  
+         3      False 2017-04-28        1 days  
+         4      False 2017-04-29        1 days  
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}13}]:} \PY{n}{first\PYZus{}month} \PY{o}{=} \PY{n}{bp\PYZus{}medication\PYZus{}df}\PY{p}{[}\PY{n}{bp\PYZus{}medication\PYZus{}df}\PY{o}{.}\PY{n}{is\PYZus{}month1} \PY{o}{==} \PY{k+kc}{True}\PY{p}{]}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{user\PYZus{}id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{is\PYZus{}month1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{pill\PYZus{}detect}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}
+         \PY{n}{first\PYZus{}month\PYZus{}pills\PYZus{}taken} \PY{o}{=} \PY{n}{first\PYZus{}month}\PY{p}{[}
+             \PY{n}{first\PYZus{}month}\PY{o}{.}\PY{n}{pill\PYZus{}detect} \PY{o}{==} \PY{k+kc}{True}\PY{p}{]}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{user\PYZus{}id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{is\PYZus{}month1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{user\PYZus{}id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{as\PYZus{}index}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}\PY{o}{.}\PY{n}{count}\PY{p}{(}\PY{p}{)}
+         \PY{n}{first\PYZus{}month\PYZus{}days\PYZus{}recorded} \PY{o}{=} \PY{n}{first\PYZus{}month}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{user\PYZus{}id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{is\PYZus{}month1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{user\PYZus{}id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{as\PYZus{}index}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}\PY{o}{.}\PY{n}{count}\PY{p}{(}\PY{p}{)}
+         
+         \PY{n}{second\PYZus{}month} \PY{o}{=} \PY{n}{bp\PYZus{}medication\PYZus{}df}\PY{p}{[}\PY{n}{bp\PYZus{}medication\PYZus{}df}\PY{o}{.}\PY{n}{is\PYZus{}month2} \PY{o}{==} \PY{k+kc}{True}\PY{p}{]}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{user\PYZus{}id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{is\PYZus{}month2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{pill\PYZus{}detect}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}
+         \PY{n}{second\PYZus{}month\PYZus{}pills\PYZus{}taken} \PY{o}{=} \PY{n}{second\PYZus{}month}\PY{p}{[}
+             \PY{n}{second\PYZus{}month}\PY{o}{.}\PY{n}{pill\PYZus{}detect} \PY{o}{==} \PY{k+kc}{True}\PY{p}{]}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{user\PYZus{}id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{is\PYZus{}month2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{user\PYZus{}id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{as\PYZus{}index}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}\PY{o}{.}\PY{n}{count}\PY{p}{(}\PY{p}{)}
+         \PY{n}{second\PYZus{}month\PYZus{}days\PYZus{}recorded} \PY{o}{=} \PY{n}{second\PYZus{}month}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{user\PYZus{}id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{is\PYZus{}month2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{user\PYZus{}id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{as\PYZus{}index}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}\PY{o}{.}\PY{n}{count}\PY{p}{(}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} rename columns}
+         \PY{n}{first\PYZus{}month\PYZus{}pills\PYZus{}taken}\PY{o}{.}\PY{n}{columns} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{user\PYZus{}id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{first\PYZus{}month\PYZus{}pills\PYZus{}taken}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+         \PY{n}{first\PYZus{}month\PYZus{}days\PYZus{}recorded}\PY{o}{.}\PY{n}{columns} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{user\PYZus{}id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{first\PYZus{}month\PYZus{}days\PYZus{}recorded}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+         
+         \PY{n}{second\PYZus{}month\PYZus{}pills\PYZus{}taken}\PY{o}{.}\PY{n}{columns} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{user\PYZus{}id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{second\PYZus{}month\PYZus{}pills\PYZus{}taken}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+         \PY{n}{second\PYZus{}month\PYZus{}days\PYZus{}recorded}\PY{o}{.}\PY{n}{columns} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{user\PYZus{}id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{second\PYZus{}month\PYZus{}days\PYZus{}recorded}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+         
+         \PY{n}{monthly\PYZus{}medication\PYZus{}df} \PY{o}{=} \PY{n}{first\PYZus{}month\PYZus{}pills\PYZus{}taken}\PY{o}{.}\PY{n}{merge}\PY{p}{(}\PY{n}{first\PYZus{}month\PYZus{}days\PYZus{}recorded}\PY{p}{,} \PY{n}{on}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{user\PYZus{}id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{o}{.}\PY{n}{merge}\PY{p}{(}
+             \PY{n}{second\PYZus{}month\PYZus{}pills\PYZus{}taken}\PY{p}{,} \PY{n}{on}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{user\PYZus{}id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{o}{.}\PY{n}{merge}\PY{p}{(}\PY{n}{second\PYZus{}month\PYZus{}days\PYZus{}recorded}\PY{p}{,} \PY{n}{on}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{user\PYZus{}id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         
+         \PY{n}{monthly\PYZus{}medication\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{first\PYZus{}month\PYZus{}adherence}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{monthly\PYZus{}medication\PYZus{}df}\PY{p}{[}
+             \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{first\PYZus{}month\PYZus{}pills\PYZus{}taken}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{/}\PY{n}{monthly\PYZus{}medication\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{first\PYZus{}month\PYZus{}days\PYZus{}recorded}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+         \PY{n}{monthly\PYZus{}medication\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{second\PYZus{}month\PYZus{}adherence}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{monthly\PYZus{}medication\PYZus{}df}\PY{p}{[}
+             \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{second\PYZus{}month\PYZus{}pills\PYZus{}taken}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{/}\PY{n}{monthly\PYZus{}medication\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{second\PYZus{}month\PYZus{}days\PYZus{}recorded}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+         \PY{n}{monthly\PYZus{}medication\PYZus{}df}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}13}]:}    user\_id  first\_month\_pills\_taken  first\_month\_days\_recorded  \textbackslash{}
+         0   100000                        5                         29   
+         1   100002                        6                         27   
+         2   100003                       12                         25   
+         3   100006                       10                         28   
+         4   100007                        8                         29   
+         
+            second\_month\_pills\_taken  second\_month\_days\_recorded  \textbackslash{}
+         0                         7                          29   
+         1                        12                          30   
+         2                         7                          29   
+         3                         8                          29   
+         4                        11                          27   
+         
+            first\_month\_adherence  second\_month\_adherence  
+         0               0.172414                0.241379  
+         1               0.222222                0.400000  
+         2               0.480000                0.241379  
+         3               0.357143                0.275862  
+         4               0.275862                0.407407  
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}17}]:} \PY{n}{display}\PY{p}{(}\PY{n}{monthly\PYZus{}medication\PYZus{}df}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    
+    \begin{verbatim}
+             user_id  first_month_pills_taken  first_month_days_recorded  \
+count    4341.000000              4341.000000                4341.000000   
+mean   102205.897489                 8.331490                  28.007832   
+std      1272.044729                 5.098025                   1.018462   
+min    100000.000000                 1.000000                  23.000000   
+25%    101105.000000                 5.000000                  27.000000   
+50%    102203.000000                 7.000000                  28.000000   
+75%    103305.000000                11.000000                  29.000000   
+max    104409.000000                28.000000                  29.000000   
+
+       second_month_pills_taken  second_month_days_recorded  \
+count               4341.000000                 4341.000000   
+mean                  13.593872                   29.856254   
+std                    6.230315                    1.088302   
+min                    1.000000                   24.000000   
+25%                    9.000000                   29.000000   
+50%                   13.000000                   30.000000   
+75%                   18.000000                   31.000000   
+max                   30.000000                   31.000000   
+
+       first_month_adherence  second_month_adherence  
+count            4341.000000             4341.000000  
+mean                0.297394                0.455459  
+std                 0.181384                0.208466  
+min                 0.034483                0.032258  
+25%                 0.172414                0.290323  
+50%                 0.259259                0.433333  
+75%                 0.392857                0.612903  
+max                 0.965517                1.000000  
+    \end{verbatim}
+
+    
+    \hypertarget{significance-test-for-adherence-improvement}{%
+\subsection{Significance test for adherence
+improvement}\label{significance-test-for-adherence-improvement}}
+
+\begin{verbatim}
+variances are almost same for each month adherence --> 2 sided 2 sample T-test. 
+\end{verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}14}]:} \PY{n}{ttest\PYZus{}ind}\PY{p}{(}\PY{n}{monthly\PYZus{}medication\PYZus{}df}\PY{o}{.}\PY{n}{first\PYZus{}month\PYZus{}adherence}\PY{p}{,} \PY{n}{monthly\PYZus{}medication\PYZus{}df}\PY{o}{.}\PY{n}{second\PYZus{}month\PYZus{}adherence}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}14}]:} Ttest\_indResult(statistic=-37.687855129809392, pvalue=5.1203780035829671e-288)
+\end{Verbatim}
+            
+    low p-value indicates that both the samples are not similar
+
+negative test statistic (a=first\_month\_adherence,
+b=second\_month\_adherence) indicates that overall people had more
+adherence in the second month
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}15}]:} \PY{n}{monthly\PYZus{}medication\PYZus{}df}\PY{o}{.}\PY{n}{first\PYZus{}month\PYZus{}adherence}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}15}]:} 0.2973943520389648
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}16}]:} \PY{n}{monthly\PYZus{}medication\PYZus{}df}\PY{o}{.}\PY{n}{second\PYZus{}month\PYZus{}adherence}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}16}]:} 0.45545887585809464
+\end{Verbatim}
+            
+    We can further analyze the patients in depth by classfying them into
+classes (overweight, obese1, obese2, obese3) or into categories (normal,
+pre-hypertension, high).
+
+    I enjoyed working on this task, Thank You!
+
+Veera Marni
+
+narayana1043@gmail.com
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+    \end{document}
