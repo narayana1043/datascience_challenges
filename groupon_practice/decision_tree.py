@@ -106,5 +106,3 @@ clf.fit(train, 'quality')
 
 # X_train, Y_train = train.drop(['quality']), train['quality']
 # X_test, Y_test = test.drop(['quality']), test['quality']
-
-
