@@ -4,7 +4,7 @@ import pandas as pd
 
 # utils
 
-def distance_to_center(X, center, distance='ecluid'):
+def eclud_dist(X, center, distance='ecluid'):
     if distance.lower() == 'ecluid':
         return np.sqrt(np.sum(np.square(X - center), axis=1))
     else:
@@ -26,7 +26,7 @@ class KMeans:
         for iteration in range(self.max_iter):
             dist = []
             for center in self.centers:
-                dist.append(distance_to_center(X, center))
+                dist.append(eclud_dist(X, center))
             category = np.argmin(dist, axis=0)
 
             for center_id in range(self.n_means):
@@ -36,7 +36,7 @@ class KMeans:
     def predict(self, Y):
         dist = []
         for center in self.centers:
-            dist.append(distance_to_center(Y, center))
+            dist.append(eclud_dist(Y, center))
         return np.argmin(dist, axis=0)
 
 
